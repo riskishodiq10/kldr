@@ -3,151 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Estimasi Pengiriman Paket</title>
+<title>Kalender Estimasi Pengemasan & Pengiriman</title>
 <style>
   :root { --bg:#f5f7fa; --card:#fff; --text:#1d2733; --muted:#6b7785; --accent:#1f6f8b; --border:#d9e0e7; }
   @media (prefers-color-scheme: dark) {
     :root { --bg:#141a21; --card:#1d252e; --text:#e8edf2; --muted:#98a4b1; --accent:#5cb3cf; --border:#2f3a46; }
   }
-  * { box-sizing: border-box; }
-  body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px;
-         background:var(--bg); color:var(--text); font-family:Georgia,"Times New Roman",serif; }
-  main { width:100%; max-width:480px; background:var(--card); border:1px solid var(--border);
-         border-radius:12px; padding:28px; }
-  h1 { font-size:1.4rem; margin:0 0 6px; }
-  p.sub { margin:0 0 20px; color:var(--muted); font-size:.95rem; line-height:1.5; }
-  label { display:block; margin-bottom:6px; font-weight:bold; }
-  select, input[type="date"] { width:100%; padding:10px 12px; font-size:1rem; margin-bottom:16px;
-         border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text); font-family:inherit; }
-  select:focus-visible, input:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
-  #hasil { margin-top:8px; padding:16px; border-left:4px solid var(--accent); background:var(--bg);
-           line-height:1.6; display:none; }
-  #catatan { display:block; margin-top:10px; color:var(--muted); font-size:.9rem; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:24px 16px; background:var(--bg); color:var(--text); font-family:Georgia,"Times New Roman",serif; }
+  .wrap { max-width:720px; margin:0 auto; display:grid; gap:20px; }
+  section { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; }
+  h1 { font-size:1.4rem; margin:0; } h2 { font-size:1.15rem; margin:0 0 6px; }
+  p.sub { margin:0 0 16px; color:var(--muted); font-size:.92rem; line-height:1.5; }
+  label { display:block; margin:0 0 6px; font-weight:bold; font-size:.95rem; }
+  select, input, textarea { width:100%; padding:10px 12px; font-size:1rem; margin-bottom:14px; border:1px solid var(--border);
+    border-radius:8px; background:var(--bg); color:var(--text); font-family:inherit; }
+  textarea { min-height:230px; line-height:1.5; font-size:.92rem; resize:vertical; }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:520px) { .row { grid-template-columns:1fr; } }
+  .scroll { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:.92rem; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:normal; }
+  td.tgl { font-weight:bold; white-space:nowrap; }
+  button { padding:10px 16px; font-size:.95rem; border:0; border-radius:8px; background:var(--accent); color:#fff; cursor:pointer; font-family:inherit; }
+  .warn { color:#b45309; font-size:.88rem; margin:8px 0 0; }
+  .note { color:var(--muted); font-size:.85rem; line-height:1.5; margin:12px 0 0; }
 </style>
 </head>
 <body>
-<main>
-  <h1>Estimasi Pengiriman Paket</h1>
-  <p class="sub">Pilih tipe pengiriman dan tanggal. Hanya hari kerja yang dihitung.</p>
+<div class="wrap">
+  <h1>Kalender Estimasi Pengemasan & Pengiriman</h1>
 
-  <label for="tipe">Tipe pengiriman</label>
-  <select id="tipe"></select>
+  <!-- 1. PENGEMASAN -->
+  <section>
+    <h2>1. Estimasi pengemasan</h2>
+    <p class="sub">Dihitung dengan hari kerja dan libur Indonesia. Pre-order dihitung dari tanggal pengemasan.</p>
+    <label for="tglPack">Tanggal pengemasan</label>
+    <input type="date" id="tglPack">
+    <label for="poCustom">Pre-order lain (hari kerja, opsional)</label>
+    <input type="number" id="poCustom" min="1" max="200" placeholder="Contoh: 14">
+    <div class="scroll"><table id="tblPack"></table></div>
+    <p class="warn" id="warnPack"></p>
+  </section>
 
-  <label for="tanggal">Tanggal pengiriman</label>
-  <input type="date" id="tanggal">
+  <!-- 2. PENGIRIMAN -->
+  <section>
+    <h2>2. Estimasi pengiriman</h2>
+    <p class="sub">Dihitung dengan hari kerja dan libur negara tujuan. Untuk 5DD, isi tanggal paid.</p>
+    <div class="row">
+      <div><label for="negara">Negara</label><select id="negara"></select></div>
+      <div><label for="tglKirim">Tanggal pengiriman</label><input type="date" id="tglKirim"></div>
+    </div>
+    <div class="scroll"><table id="tblKirim"></table></div>
+    <p class="warn" id="warnKirim"></p>
 
-  <div id="hasil" role="status" aria-live="polite"></div>
-</main>
+    <hr style="border:0;border-top:1px solid var(--border);margin:20px 0">
+    <h2>Pesan ke buyer</h2>
+    <div class="row">
+      <div><label for="opsi">Opsi pengiriman</label><select id="opsi"></select></div>
+      <div><label for="status">Status paket</label><select id="status"></select></div>
+    </div>
+    <textarea id="pesan" readonly aria-label="Pesan untuk buyer"></textarea>
+    <button id="salin" type="button">Salin pesan</button>
+    <span id="ok" style="margin-left:10px;color:var(--muted)"></span>
+    <p class="note">Bagian XXXXXXX (tanggal tercepat) dan nomor tracking diisi manual.</p>
+  </section>
+</div>
 
 <script>
-  /* =====================================================
-     PENGATURAN — bagian ini yang diedit kalau ada perubahan
-     ===================================================== */
+/* =========================================================
+   PENGATURAN: bagian ini yang diedit kalau ada perubahan
+   Format tanggal: "YYYY-MM-DD". Cakupan data: 1 Nov 2026 s.d. 31 Des 2027.
+   ========================================================= */
+const COVER_FROM = "2026-11-01", COVER_TO = "2027-12-31";
 
-  // Libur nasional Indonesia (berlaku untuk SEMUA tipe). Format: "YYYY-MM-DD"
-  const LIBUR_UMUM = [
-    "2026-12-25",
-    "2027-01-01",
-    // tambahkan tanggal lain...
+const LIBUR = {
+  ID: [ // SKB 3 Menteri (libur nasional + cuti bersama)
+    "2026-12-24","2026-12-25",
+    "2027-01-01","2027-01-05","2027-02-05","2027-02-06","2027-03-08","2027-03-09","2027-03-10","2027-03-11",
+    "2027-03-12","2027-03-15","2027-03-25","2027-03-26","2027-03-28","2027-05-01","2027-05-06","2027-05-17",
+    "2027-05-18","2027-05-19","2027-05-20","2027-06-01","2027-06-06","2027-08-15","2027-08-17",
+    "2027-12-24","2027-12-25","2027-12-26"
+  ],
+  SG: [ // MOM Singapore
+    "2026-11-09","2026-12-25",
+    "2027-01-01","2027-02-06","2027-02-08","2027-03-10","2027-03-26","2027-05-01","2027-05-17","2027-05-20",
+    "2027-08-09","2027-10-28","2027-12-25"
+  ],
+  MY: [ // Federal / Kuala Lumpur. Hari Raya & Deepavali masih tentatif
+    "2026-11-09","2026-12-25",
+    "2027-01-01","2027-02-01","2027-02-06","2027-02-07","2027-02-08","2027-02-24","2027-03-10","2027-03-11",
+    "2027-05-01","2027-05-17","2027-05-20","2027-06-07","2027-08-16","2027-08-31","2027-09-16","2027-10-29",
+    "2027-12-25"
+  ],
+  PH: [ // Proclamation 1427 (2027) + 2026. Eid'l Fitr/Adha belum ditetapkan
+    "2026-11-02","2026-11-30","2026-12-08","2026-12-24","2026-12-25","2026-12-30","2026-12-31",
+    "2027-01-01","2027-03-25","2027-03-26","2027-04-09","2027-05-01","2027-06-12","2027-08-30",
+    "2027-11-01","2027-11-02","2027-11-30","2027-12-08","2027-12-24","2027-12-25","2027-12-31"
+  ]
+};
+
+// Pre-order (hari kerja dari tanggal pengemasan)
+const PO_HARI = [3, 4, 5, 6, 7, 10, 30];
+
+// Opsi pengiriman per negara. n = lama hari kerja, cutoff: "before"/"after" (khusus 5DD)
+const NEGARA = {
+  SG: { nama:"Singapore", opsi:[
+    { label:"5DD, sebelum jam 2", n:5, cutoff:"before" },
+    { label:"5DD, sesudah jam 2", n:5, cutoff:"after" },
+    { label:"Doorstep Delivery", n:10 },
+    { label:"Standard Internasional", n:25 } ]},
+  MY: { nama:"Malaysia", opsi:[
+    { label:"5DD, sebelum jam 2", n:5, cutoff:"before" },
+    { label:"5DD, sesudah jam 2", n:5, cutoff:"after" },
+    { label:"Doorstep Delivery", n:10 },
+    { label:"Standard Internasional", n:25 } ]},
+  PH: { nama:"Philippines", opsi:[
+    { label:"5DD, CO sebelum 12AM", n:5, cutoff:"before" },
+    { label:"5DD, CO sesudah 12AM", n:5, cutoff:"after" },
+    { label:"Standard Local FBS", n:12 },
+    { label:"Standard Internasional & Doorstep", n:18 } ]}
+};
+
+// Template pesan. m = tanggal maksimal, c = nama negara
+const CS = "For detailed information you can contact Shopee Customer Service. 🙏";
+const BACKLOG = "Please note that the delivery estimate may change due to operational queues or parcel backlog at the sorting center. 🙏";
+const TEMPLATE = {
+  "3pl-id": { nama:"3PL Indonesia", isi:(m)=>
+`Since the delivery process is handled by the courier and not directly by our store/seller, we are unable to control or speed up the shipment, and our access to detailed delivery updates is limited. ${CS}
+
+Your order has been shipped to the sorting center. Once the parcel arrives at the sorting center, please wait for the earliest estimated date, which is XXXXXXX, and the estimated maximum delivery date is ${m}.
+
+${BACKLOG} Your order is still within the normal delivery timeframe provided by the courier service. Kindly wait patiently while your parcel is in transit. We truly appreciate your patience and understanding. 🙏🙏` },
+  "warehouse": { nama:"Warehouse ID", isi:(m)=>
+`Since the international shipping process is handled by the Courier/Delivery Service and not by the seller, we are unable to control the delivery progress. ${CS}
+
+Your order is currently in the sorting process at Shopee's warehouse. Please wait for the earliest estimated date, which is XXXXXXX, and the estimated maximum delivery date is ${m}. The sorting process is carried out to ensure that the order is shipped in good condition, and the timeline may vary depending on the warehouse's operational queue. ${BACKLOG}
+
+Your order is still within the normal delivery timeframe. Thank you for your patience and understanding. 🙏🙏` },
+  "sls": { nama:"SLS / Handover", isi:(m)=>
+`Since the international shipping process is handled by the Courier/Delivery Service and not by the seller, we are unable to control the delivery progress. ${CS}
+
+Your order is currently in the sorting process for shipment to the destination country and is no longer located in Indonesia, and the order is still within the normal delivery estimate. Kindly allow time for the delivery process for the earliest estimated date, which is XXXXXXX, and the estimated maximum delivery date is ${m}. ${BACKLOG}
+
+If your tracking still shows 'Jakarta', it only indicates the last recorded location before dispatch. Your parcel has already left Jakarta and is on its way to your country. 🙏 Your order is still within the normal delivery timeframe. We sincerely appreciate your patience and understanding while your parcel is in transit. 🙏🙏` },
+  "3pl-overseas": { nama:"3PL Overseas", isi:(m,c)=>
+`Since the international shipping process is handled by the Courier/Delivery Service and not by the seller, we are unable to control the delivery progress. ${CS}
+
+Your order has arrived in ${c} and is now being handled by the local courier. You can track it using tracking number XXXXXXXXX via XXXXXXX. The earliest estimated delivery date is XXXXXXXX, and the maximum estimated delivery date is ${m}.
+
+${BACKLOG} Your order is still within the normal delivery timeframe. Thank you for your patience and understanding. 🙏🙏` },
+  "5dd": { nama:"Jasa kirim 5DD", isi:(m)=>
+`For now, your order with SN xxxx is already shipped. The delivery process from Indonesia takes 5 working days (It's not include Saturdays/Sundays/public holidays.) since it was sent by the seller and the maximum estimate you will receive is ${m}, you don't need to worry because it can be faster.♥️` }
+};
+
+/* =========================================================
+   LOGIKA: biasanya tidak perlu diubah
+   ========================================================= */
+const $ = (id) => document.getElementById(id);
+const CAL = Object.fromEntries(Object.entries(LIBUR).map(([k, v]) => [k, new Set(v)]));
+
+const iso = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const parse = (s) => { const [y,m,t] = s.split("-").map(Number); return new Date(y, m-1, t); };
+const isWork = (d, cal) => d.getDay() !== 0 && d.getDay() !== 6 && !cal.has(iso(d));
+function addWD(d, n, cal) { const x = new Date(d); let k = 0; while (k < n) { x.setDate(x.getDate()+1); if (isWork(x, cal)) k++; } return x; }
+function nextWD(d, cal) { return addWD(d, 1, cal); }
+function wdBetween(a, b, cal) { let k = 0; const x = new Date(a); while (x < b) { x.setDate(x.getDate()+1); if (isWork(x, cal)) k++; } return k; }
+
+const fID = new Intl.DateTimeFormat("id-ID", { weekday:"long", day:"numeric", month:"long", year:"numeric" });
+const fEN = new Intl.DateTimeFormat("en-US", { day:"numeric", month:"long", year:"numeric" });
+const outOfRange = (d) => iso(d) > COVER_TO || iso(d) < COVER_FROM;
+
+function fill(tbl, head, rows) {
+  tbl.innerHTML = "<tr>" + head.map(h => `<th>${h}</th>`).join("") + "</tr>" +
+    rows.map(r => "<tr>" + r.map((c, i) => `<td class="${i===1?'tgl':''}">${c}</td>`).join("") + "</tr>").join("");
+}
+
+/* ---- 1. Pengemasan ---- */
+function hitungPack() {
+  const v = $("tglPack").value, tbl = $("tblPack");
+  if (!v) { tbl.innerHTML = ""; $("warnPack").textContent = ""; return; }
+  const sel = parse(v), cal = CAL.ID;
+  const rows = [
+    ["CO sebelum 12AM", fID.format(isWork(sel, cal) ? sel : nextWD(sel, cal))],
+    ["CO sesudah 12AM", fID.format(nextWD(sel, cal))]
   ];
+  const list = [...PO_HARI]; const c = parseInt($("poCustom").value, 10);
+  if (c > 0 && !list.includes(c)) list.push(c);
+  let late = outOfRange(sel);
+  list.forEach(n => { const d = addWD(sel, n, cal); late = late || outOfRange(d); rows.push([`Pre-Order ${n} hari kerja`, fID.format(d)]); });
+  fill(tbl, ["Keterangan", "Maksimal pengemasan"], rows);
+  $("warnPack").textContent = late ? "Sebagian hasil melewati data libur (Nov 2026 – Des 2027), jadi mungkin kurang akurat." : "";
+}
 
-  // Aturan tiap tipe pengiriman.
-  //  hari      : lama pengiriman dalam hari kerja
-  //  hariKerja : hari yang dihitung (0=Minggu, 1=Senin, ... 6=Sabtu)
-  //  libur     : libur tambahan khusus tipe ini (mis. libur negara tujuan)
-  //  catatan   : teks tambahan di bawah hasil (boleh dikosongkan)
-  // ANGKA DI BAWAH HANYA CONTOH, ganti sesuai SLA yang sebenarnya.
-  const LAYANAN = {
-    "3pl-id": {
-      nama: "3PL ID",
-      hari: 2,
-      hariKerja: [1, 2, 3, 4, 5],
-      libur: [],
-      catatan: "Estimasi dihitung sejak paket diterima 3PL."
-    },
-    "warehouse": {
-      nama: "Warehouse",
-      hari: 1,
-      hariKerja: [1, 2, 3, 4, 5],
-      libur: [],
-      catatan: ""
-    },
-    "sls": {
-      nama: "SLS",
-      hari: 3,
-      hariKerja: [1, 2, 3, 4, 5, 6], // contoh: Sabtu tetap beroperasi
-      libur: [],
-      catatan: ""
-    },
-    "overseas": {
-      nama: "Overseas",
-      hari: 10,
-      hariKerja: [1, 2, 3, 4, 5],
-      libur: [], // isi libur negara tujuan di sini
-      catatan: "Belum termasuk proses bea cukai di negara tujuan."
-    }
-  };
-
-  /* =====================================================
-     LOGIKA — biasanya tidak perlu diubah
-     ===================================================== */
-
-  const tipeEl = document.getElementById("tipe");
-  const tanggalEl = document.getElementById("tanggal");
-  const hasilEl = document.getElementById("hasil");
-
-  for (const [kode, cfg] of Object.entries(LAYANAN)) {
-    tipeEl.add(new Option(cfg.nama, kode));
-  }
-
-  function keISO(d) {
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  }
-
-  function hariKerja(d, cfg) {
-    const iso = keISO(d);
-    return cfg.hariKerja.includes(d.getDay())
-      && !LIBUR_UMUM.includes(iso)
-      && !cfg.libur.includes(iso);
-  }
-
-  function tambahHariKerja(awal, cfg) {
-    const d = new Date(awal);
-    let n = 0;
-    while (n < cfg.hari) {
-      d.setDate(d.getDate() + 1);
-      if (hariKerja(d, cfg)) n++;
-    }
-    return d;
-  }
-
-  const format = new Intl.DateTimeFormat("id-ID", {
-    weekday: "long", day: "numeric", month: "long", year: "numeric"
+/* ---- 2. Pengiriman ---- */
+let hasil = [];
+function hitungKirim() {
+  const v = $("tglKirim").value, kode = $("negara").value, tbl = $("tblKirim");
+  if (!v) { tbl.innerHTML = ""; $("opsi").innerHTML = ""; $("pesan").value = ""; $("warnKirim").textContent = ""; hasil = []; return; }
+  const sel = parse(v), cal = CAL[kode], today = new Date(); today.setHours(0,0,0,0);
+  let late = outOfRange(sel);
+  hasil = NEGARA[kode].opsi.map(o => {
+    const base = o.cutoff === "after" ? nextWD(sel, cal) : sel;
+    const d = addWD(base, o.n, cal); late = late || outOfRange(d);
+    const sisa = d > today ? wdBetween(today, d, cal) : 0;
+    return { ...o, d, sisa };
   });
+  fill(tbl, ["Opsi", "Maksimal tiba", "Sisa hari kerja"], hasil.map(h => [h.label + ` (${h.n} HK)`, fID.format(h.d), h.sisa]));
+  $("warnKirim").textContent = late ? "Sebagian hasil melewati data libur (Nov 2026 – Des 2027), jadi mungkin kurang akurat." : "";
+  const keep = $("opsi").value;
+  $("opsi").innerHTML = hasil.map((h, i) => `<option value="${i}">${h.label}</option>`).join("");
+  if (keep && hasil[keep]) $("opsi").value = keep;
+  buatPesan();
+}
 
-  function hitung() {
-    if (!tanggalEl.value) { hasilEl.style.display = "none"; return; }
-    const cfg = LAYANAN[tipeEl.value];
-    const [y, m, t] = tanggalEl.value.split("-").map(Number);
-    const awal = new Date(y, m - 1, t);
-    const tiba = tambahHariKerja(awal, cfg);
+function buatPesan() {
+  if (!hasil.length) return;
+  const h = hasil[$("opsi").value || 0];
+  $("pesan").value = TEMPLATE[$("status").value].isi(fEN.format(h.d), NEGARA[$("negara").value].nama);
+}
 
-    hasilEl.textContent =
-      `Paket ${cfg.nama} yang dikirim pada ${format.format(awal)} diperkirakan tiba pada ` +
-      `${format.format(tiba)}, yaitu ${cfg.hari} hari kerja setelah tanggal pengiriman ` +
-      `(tidak termasuk hari libur dan akhir pekan sesuai ketentuan ${cfg.nama}).`;
-
-    if (cfg.catatan) {
-      const c = document.createElement("small");
-      c.id = "catatan";
-      c.textContent = cfg.catatan;
-      hasilEl.appendChild(c);
-    }
-    hasilEl.style.display = "block";
-  }
-
-  tipeEl.addEventListener("change", hitung);
-  tanggalEl.addEventListener("change", hitung);
+/* ---- Inisialisasi ---- */
+for (const [k, c] of Object.entries(NEGARA)) $("negara").add(new Option(c.nama, k));
+for (const [k, t] of Object.entries(TEMPLATE)) $("status").add(new Option(t.nama, k));
+$("tglPack").addEventListener("change", hitungPack);
+$("poCustom").addEventListener("input", hitungPack);
+$("negara").addEventListener("change", hitungKirim);
+$("tglKirim").addEventListener("change", hitungKirim);
+$("opsi").addEventListener("change", buatPesan);
+$("status").addEventListener("change", buatPesan);
+$("salin").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText($("pesan").value); }
+  catch { $("pesan").select(); document.execCommand("copy"); }
+  $("ok").textContent = "Tersalin"; setTimeout(() => $("ok").textContent = "", 1800);
+});
 </script>
 </body>
 </html>
