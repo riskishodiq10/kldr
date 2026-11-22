@@ -13,58 +13,62 @@
   }
   * { box-sizing:border-box; }
   body { margin:0; padding:24px 16px; background:var(--bg); color:var(--text); font-family:Georgia,"Times New Roman",serif; }
-  .wrap { max-width:640px; margin:0 auto; }
-  h1 { font-size:1.4rem; margin:0 0 4px; } h2 { font-size:1.1rem; margin:22px 0 8px; }
+  .wrap { max-width:1000px; margin:0 auto; }
+  body.home .wrap { min-height:calc(100vh - 48px); display:flex; flex-direction:column; justify-content:center; padding-bottom:12vh; }
+  body.home h1 { text-align:center; font-size:1.7rem; }
+  body.home p.sub { text-align:center; }
+  h1 { font-size:1.35rem; margin:0 0 4px; }
   p.sub { margin:0 0 18px; color:var(--muted); font-size:.93rem; line-height:1.5; }
-  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:22px; }
   [hidden] { display:none !important; }
-  button { font-family:inherit; font-size:.95rem; cursor:pointer; color:var(--text); }
+  button { font-family:inherit; font-size:.92rem; cursor:pointer; color:var(--text); }
   :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 
-  .menu { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .menu { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:560px; width:100%; margin:0 auto; }
   @media (max-width:480px) { .menu { grid-template-columns:1fr; } }
-  .menu button { padding:30px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; font-size:1.15rem; }
+  .menu button { padding:34px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; font-size:1.2rem; }
   .menu button small { display:block; margin-top:6px; color:var(--muted); font-size:.85rem; }
   .menu button:hover { border-color:var(--accent); }
-  .back { background:none; border:0; color:var(--accent); padding:0; margin-bottom:14px; }
+  .back { background:none; border:0; color:var(--accent); padding:0; margin-bottom:10px; }
 
-  .seg { display:flex; flex-wrap:wrap; gap:8px; }
-  .seg button { padding:9px 14px; border:1px solid var(--border); border-radius:8px; background:var(--bg); }
+  .layout { display:grid; grid-template-columns:minmax(300px,370px) 1fr; gap:18px; align-items:start; }
+  @media (max-width:820px) { .layout { grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px; }
+  .card h2 { font-size:1rem; margin:0 0 4px; }
+  label.t { display:block; margin:14px 0 6px; font-weight:bold; font-size:.9rem; }
+  label.t:first-of-type { margin-top:0; }
+
+  .seg { display:flex; flex-wrap:wrap; gap:6px; }
+  .seg button { padding:7px 11px; border:1px solid var(--border); border-radius:8px; background:var(--bg); }
   .seg button.on { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
+  .seg.dim button { opacity:.45; }
+  .stepper { display:flex; align-items:center; gap:8px; margin-top:8px; }
+  .stepper button { width:30px; height:30px; border:1px solid var(--border); border-radius:8px; background:var(--bg); }
+  .stepper b { min-width:100px; text-align:center; font-size:.9rem; }
 
-  .stepper { display:flex; align-items:center; gap:10px; margin-top:10px; }
-  .stepper button { width:36px; height:36px; border:1px solid var(--border); border-radius:8px; background:var(--bg); font-size:1.1rem; }
-  .stepper b { min-width:120px; text-align:center; }
-
-  .cal { border:1px solid var(--border); border-radius:10px; padding:12px; background:var(--bg); }
-  .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-  .cal-head button { width:34px; height:34px; border:1px solid var(--border); border-radius:8px; background:var(--card); }
-  .grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; }
-  .grid .dow { font-size:.78rem; color:var(--muted); padding:4px 0; }
-  .grid button { aspect-ratio:1; border:1px solid transparent; border-radius:8px; background:transparent; padding:0; }
+  .cal { width:100%; max-width:268px; border:1px solid var(--border); border-radius:10px; padding:8px; background:var(--bg); }
+  .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; font-size:.88rem; }
+  .cal-head button { width:26px; height:26px; border:1px solid var(--border); border-radius:6px; background:var(--card); padding:0; }
+  .grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; text-align:center; }
+  .grid .dow { font-size:.7rem; color:var(--muted); padding:2px 0; }
+  .grid button { height:28px; border:1px solid transparent; border-radius:6px; background:transparent; padding:0; font-size:.8rem; }
   .grid button.we { color:var(--muted); }
   .grid button.hol { background:var(--hol); color:var(--hol-text); }
   .grid button.today { border-color:var(--accent); }
   .grid button.sel { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
-  .legend { font-size:.8rem; color:var(--muted); margin-top:8px; }
+  .legend { font-size:.72rem; color:var(--muted); margin-top:5px; }
 
-  table { width:100%; border-collapse:collapse; font-size:.92rem; }
-  th, td { text-align:left; padding:8px 8px; border-bottom:1px solid var(--border); }
-  th { color:var(--muted); font-weight:normal; } td.tgl { font-weight:bold; }
-  .scroll { overflow-x:auto; }
-  select, textarea { width:100%; padding:10px 12px; font-size:1rem; border:1px solid var(--border); border-radius:8px;
-    background:var(--bg); color:var(--text); font-family:inherit; }
-  textarea { min-height:210px; line-height:1.5; font-size:.92rem; resize:vertical; margin-bottom:12px; }
-  label { display:block; margin:14px 0 6px; font-weight:bold; font-size:.95rem; }
-  .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  @media (max-width:480px) { .row { grid-template-columns:1fr; } }
-  .primary { padding:10px 18px; border:0; border-radius:8px; background:var(--accent); color:var(--accent-text); }
-  .hasil { margin:14px 0 0; padding:14px; border-left:4px solid var(--accent); background:var(--soft); line-height:1.6; }
-  .warn { color:#b45309; font-size:.88rem; margin:8px 0 0; }
-  .note { color:var(--muted); font-size:.85rem; margin:10px 0 0; }
+  .judul { color:var(--muted); font-size:.85rem; margin:0; }
+  .tgl { font-size:1.35rem; font-weight:bold; margin:4px 0 2px; }
+  .info { color:var(--muted); font-size:.88rem; margin:0; line-height:1.5; }
+  .hasil { padding:14px; border-left:4px solid var(--accent); background:var(--soft); border-radius:0 8px 8px 0; margin-bottom:16px; }
+  textarea { width:100%; min-height:270px; padding:10px 12px; font-size:.92rem; line-height:1.5; border:1px solid var(--border);
+    border-radius:8px; background:var(--bg); color:var(--text); font-family:inherit; resize:vertical; margin:6px 0 12px; }
+  .primary { padding:9px 18px; border:0; border-radius:8px; background:var(--accent); color:var(--accent-text); }
+  .warn { color:#b45309; font-size:.85rem; margin:8px 0 0; }
+  .note { color:var(--muted); font-size:.82rem; }
 </style>
 </head>
-<body>
+<body class="home">
 <div class="wrap">
   <h1>Estimasi Pengemasan & Pengiriman</h1>
 
@@ -78,63 +82,80 @@
   </div>
 
   <!-- PENGEMASAN -->
-  <div id="vPack" class="card" hidden>
+  <div id="vPack" hidden>
     <button class="back" type="button" data-go="menu">← Kembali ke menu</button>
-    <h2 style="margin-top:0">Pengemasan</h2>
-    <p class="sub">Hari kerja dan libur Indonesia.</p>
+    <div class="layout">
+      <div class="card">
+        <h2>Pengemasan</h2>
+        <p class="note" style="margin:0 0 12px">Hari kerja dan libur Indonesia.</p>
+        <label class="t">Jenis pengemasan</label>
+        <div class="seg" id="segTipe">
+          <button type="button" data-v="normal" class="on">Normal</button>
+          <button type="button" data-v="po">Pre-order</button>
+        </div>
+        <div id="boxPO" hidden>
+          <label class="t">Lama pre-order (hari kerja)</label>
+          <div class="seg" id="segPO"></div>
+          <div class="stepper">
+            <button type="button" id="poMin" aria-label="Kurangi">−</button><b id="poVal"></b>
+            <button type="button" id="poPlus" aria-label="Tambah">+</button>
+          </div>
+        </div>
+        <label class="t">Waktu pesanan masuk</label>
+        <div class="seg" id="segCut">
+          <button type="button" data-v="before" class="on">Sebelum jam 12 siang</button>
+          <button type="button" data-v="after">Sesudah jam 12 siang</button>
+        </div>
+        <label class="t">Tanggal pesanan</label>
+        <div id="calPack"></div>
+      </div>
 
-    <label>Jenis pengemasan</label>
-    <div class="seg" id="segTipe">
-      <button type="button" data-v="normal" class="on">Pengemasan normal</button>
-      <button type="button" data-v="po">Pre-order</button>
-    </div>
-
-    <div id="boxPO" hidden>
-      <label>Lama pre-order (hari kerja)</label>
-      <div class="seg" id="segPO"></div>
-      <div class="stepper">
-        <button type="button" id="poMin" aria-label="Kurangi">−</button><b id="poVal"></b>
-        <button type="button" id="poPlus" aria-label="Tambah">+</button>
+      <div class="card">
+        <div class="hasil">
+          <p class="judul">Maksimal paket dikirim</p>
+          <p class="tgl" id="pTgl"></p>
+          <p class="info" id="pInfo"></p>
+        </div>
+        <label class="t" for="pesanPack">Makro untuk buyer</label>
+        <textarea id="pesanPack" readonly></textarea>
+        <button class="primary" type="button" data-copy="pesanPack">Salin makro</button>
+        <span class="note" data-ok="pesanPack"></span>
+        <p class="warn" id="pWarn"></p>
       </div>
     </div>
-
-    <label>Waktu checkout / pesanan masuk</label>
-    <div class="seg" id="segCut">
-      <button type="button" data-v="before" class="on">Sebelum jam 12 siang</button>
-      <button type="button" data-v="after">Sesudah jam 12 siang</button>
-    </div>
-
-    <label>Tanggal pesanan / pengemasan</label>
-    <div id="calPack"></div>
-    <div id="outPack"></div>
   </div>
 
   <!-- PENGIRIMAN -->
-  <div id="vKirim" class="card" hidden>
+  <div id="vKirim" hidden>
     <button class="back" type="button" data-go="menu">← Kembali ke menu</button>
-    <h2 style="margin-top:0">Pengiriman</h2>
-    <p class="sub">Hari kerja dan libur negara tujuan. Untuk 5DD, pilih tanggal paid.</p>
+    <div class="layout">
+      <div class="card">
+        <h2>Pengiriman</h2>
+        <p class="note" style="margin:0 0 12px">Hari kerja dan libur negara tujuan.</p>
+        <label class="t">Negara</label>
+        <div class="seg" id="segNegara"></div>
+        <label class="t">Opsi pengiriman</label>
+        <div class="seg" id="segOpsi"></div>
+        <label class="t">Status paket</label>
+        <div class="seg" id="segStatus"></div>
+        <label class="t">Tanggal pengiriman <span class="note" id="hintPaid"></span></label>
+        <div id="calKirim"></div>
+      </div>
 
-    <label>Negara</label>
-    <div class="seg" id="segNegara"></div>
-
-    <label>Tanggal pengiriman</label>
-    <div id="calKirim"></div>
-
-    <h2>Estimasi tiba</h2>
-    <div class="scroll"><table id="tblKirim"></table></div>
-    <p class="warn" id="warnKirim"></p>
-
-    <h2>Pesan ke buyer</h2>
-    <div class="row">
-      <div><label for="opsi" style="margin-top:0">Opsi pengiriman</label><select id="opsi"></select></div>
-      <div><label for="status" style="margin-top:0">Status paket</label><select id="status"></select></div>
+      <div class="card">
+        <div class="hasil">
+          <p class="judul">Maksimal paket sampai tujuan</p>
+          <p class="tgl" id="kTgl"></p>
+          <p class="info" id="kInfo"></p>
+        </div>
+        <label class="t" for="pesanKirim">Makro untuk buyer</label>
+        <textarea id="pesanKirim" readonly></textarea>
+        <button class="primary" type="button" data-copy="pesanKirim">Salin makro</button>
+        <span class="note" data-ok="pesanKirim"></span>
+        <p class="note" style="margin-top:10px">Bagian XXXXXXX dan nomor tracking diisi manual.</p>
+        <p class="warn" id="kWarn"></p>
+      </div>
     </div>
-    <label for="pesanKirim">Pesan</label>
-    <textarea id="pesanKirim" readonly></textarea>
-    <button class="primary" type="button" data-copy="pesanKirim">Salin pesan</button>
-    <span class="note" data-ok="pesanKirim"></span>
-    <p class="note">Bagian XXXXXXX dan nomor tracking diisi manual.</p>
   </div>
 </div>
 
@@ -177,24 +198,25 @@ const NORMAL_TAMBAH = { before: 0, after: 1 };
 const PO_TAMBAH_SESUDAH = 1;
 const PO_PILIHAN = [3, 4, 5, 6, 7, 10, 30, 60, 90];
 
-// Opsi pengiriman per negara. n = hari kerja, cutoff = "before"/"after" (hanya 5DD). PH tidak punya 5DD.
+// Opsi pengiriman per negara. Urutan pertama = pilihan awal (Standard Internasional).
+// n = hari kerja, cutoff = "before"/"after" (hanya 5DD). PH tidak punya 5DD.
 const NEGARA = {
   SG: { nama:"Singapore", opsi:[
-    { label:"5DD, sebelum jam 2", n:5, cutoff:"before", dd5:true },
-    { label:"5DD, sesudah jam 2", n:5, cutoff:"after", dd5:true },
+    { label:"Standard Internasional", n:25 },
     { label:"Doorstep Delivery", n:10 },
-    { label:"Standard Internasional", n:25 } ]},
+    { label:"5DD sebelum jam 2", n:5, cutoff:"before", dd5:true },
+    { label:"5DD sesudah jam 2", n:5, cutoff:"after", dd5:true } ]},
   MY: { nama:"Malaysia", opsi:[
-    { label:"5DD, sebelum jam 2", n:5, cutoff:"before", dd5:true },
-    { label:"5DD, sesudah jam 2", n:5, cutoff:"after", dd5:true },
+    { label:"Standard Internasional", n:25 },
     { label:"Doorstep Delivery", n:10 },
-    { label:"Standard Internasional", n:25 } ]},
+    { label:"5DD sebelum jam 2", n:5, cutoff:"before", dd5:true },
+    { label:"5DD sesudah jam 2", n:5, cutoff:"after", dd5:true } ]},
   PH: { nama:"Philippines", opsi:[
-    { label:"Standard Local FBS", n:12 },
-    { label:"Standard Internasional & Doorstep", n:18 } ]}
+    { label:"Standard Internasional & Doorstep", n:18 },
+    { label:"Standard Local FBS", n:12 } ]}
 };
 
-// Template pesan pengemasan. m = tanggal maksimal (English), n = lama pre-order
+// Makro pengemasan. m = tanggal maksimal (English), n = lama pre-order
 const PESAN_PACK = {
   normal: (m) =>
 `For now, your order with SN xxxx is will be packed. It takes 1 working days (Saturday and Sunday, Public Holiday are not included). Maximum your package will ship on ${m} But, it can be faster than the estimation.`,
@@ -204,7 +226,7 @@ const PESAN_PACK = {
 For now, your order with SN xxxx is will be packed. Maximum your package will ship on ${m} But, it can be faster than the estimation.😊👌🙏`
 };
 
-// Template pesan pengiriman. m = tanggal maksimal, c = nama negara
+// Makro pengiriman. m = tanggal maksimal, c = nama negara. Opsi 5DD otomatis memakai makro "5dd".
 const CS = "For detailed information you can contact Shopee Customer Service. 🙏";
 const BACKLOG = "Please note that the delivery estimate may change due to operational queues or parcel backlog at the sorting center. 🙏";
 const TEMPLATE = {
@@ -231,10 +253,10 @@ If your tracking still shows 'Jakarta', it only indicates the last recorded loca
 
 Your order has arrived in ${c} and is now being handled by the local courier. You can track it using tracking number XXXXXXXXX via XXXXXXX. The earliest estimated delivery date is XXXXXXXX, and the maximum estimated delivery date is ${m}.
 
-${BACKLOG} Your order is still within the normal delivery timeframe. Thank you for your patience and understanding. 🙏🙏` },
-  "5dd": { nama:"Jasa kirim 5DD", dd5:true, isi:(m)=>
-`For now, your order with SN xxxx is already shipped. The delivery process from Indonesia takes 5 working days (It's not include Saturdays/Sundays/public holidays.) since it was sent by the seller and the maximum estimate you will receive is ${m}, you don't need to worry because it can be faster.♥️` }
+${BACKLOG} Your order is still within the normal delivery timeframe. Thank you for your patience and understanding. 🙏🙏` }
 };
+const MAKRO_5DD = (m) =>
+`For now, your order with SN xxxx is already shipped. The delivery process from Indonesia takes 5 working days (It's not include Saturdays/Sundays/public holidays.) since it was sent by the seller and the maximum estimate you will receive is ${m}, you don't need to worry because it can be faster.♥️`;
 
 /* =========================================================
    LOGIKA: biasanya tidak perlu diubah
@@ -265,10 +287,10 @@ function makeCalendar(el, getCal, onPick) {
     for (let i = 0; i < first; i++) h += "<div></div>";
     for (let d = 1; d <= days; d++) {
       const dt = new Date(y, m, d), s = iso(dt), we = dt.getDay() === 0 || dt.getDay() === 6;
-      const cls = [we ? "we" : "", cal.has(s) ? "hol" : "", s === t ? "today" : "", sel && s === iso(sel) ? "sel" : ""].join(" ");
+      const cls = [we ? "we" : "", cal.has(s) ? "hol" : "", s === t ? "today" : "", s === iso(sel) ? "sel" : ""].join(" ");
       h += `<button type="button" class="${cls}" data-d="${s}" ${cal.has(s) ? 'title="Libur"' : ""}>${d}</button>`;
     }
-    el.innerHTML = h + `</div><div class="legend">Merah = libur. Abu-abu = akhir pekan.</div></div>`;
+    el.innerHTML = h + `</div><div class="legend">Merah = libur, abu-abu = akhir pekan</div></div>`;
   }
   el.addEventListener("click", (e) => {
     const b = e.target.closest("button"); if (!b) return;
@@ -279,21 +301,25 @@ function makeCalendar(el, getCal, onPick) {
   return { get: () => sel, refresh: render };
 }
 
-/* Tombol pilihan (segmented) */
+/* Tombol pilihan */
 function seg(el, onChange) {
   el.addEventListener("click", (e) => {
     const b = e.target.closest("button"); if (!b) return;
-    el.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
     onChange(b.dataset.v);
   });
 }
-function setSeg(el, v) { el.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.v === String(v))); }
+function markSeg(el, v) { el.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.v === String(v))); }
+function fillSeg(el, items, cur) {
+  el.innerHTML = items.map(([v, t]) => `<button type="button" data-v="${v}">${t}</button>`).join("");
+  markSeg(el, cur);
+}
 
 /* Navigasi menu */
 const views = { menu:$("vMenu"), pack:$("vPack"), kirim:$("vKirim") };
 document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-go]"); if (!b) return;
   Object.entries(views).forEach(([k, v]) => v.hidden = k !== b.dataset.go);
+  document.body.classList.toggle("home", b.dataset.go === "menu");
   window.scrollTo(0, 0);
 });
 
@@ -308,12 +334,10 @@ document.addEventListener("click", async (e) => {
 
 /* ---------- PENGEMASAN ---------- */
 const P = { tipe:"normal", cut:"before", po:30 };
-PO_PILIHAN.forEach(n => $("segPO").insertAdjacentHTML("beforeend", `<button type="button" data-v="${n}">${n}</button>`));
-
 function hitungPack() {
   const sel = calPack.get(), cal = CAL.ID;
-  $("boxPO").hidden = P.tipe !== "po";
-  setSeg($("segPO"), P.po); $("poVal").textContent = `${P.po} hari kerja`;
+  markSeg($("segTipe"), P.tipe); markSeg($("segCut"), P.cut); markSeg($("segPO"), P.po);
+  $("boxPO").hidden = P.tipe !== "po"; $("poVal").textContent = `${P.po} hari kerja`;
   let max;
   if (P.tipe === "normal") {
     const n = NORMAL_TAMBAH[P.cut];
@@ -321,16 +345,14 @@ function hitungPack() {
   } else {
     max = addWD(sel, P.po + (P.cut === "after" ? PO_TAMBAH_SESUDAH : 0), cal);
   }
-  const msg = P.tipe === "normal" ? PESAN_PACK.normal(fEN.format(max)) : PESAN_PACK.po(fEN.format(max), P.po);
-  $("outPack").innerHTML =
-    `<div class="hasil">Maksimal paket dikirim: <b>${fID.format(max)}</b><br>
-     <small>Pesanan ${fID.format(sel)}, ${P.cut === "before" ? "sebelum" : "sesudah"} jam 12 siang.</small></div>
-     <label for="pesanPack">Pesan ke buyer</label>
-     <textarea id="pesanPack" readonly>${msg}</textarea>
-     <button class="primary" type="button" data-copy="pesanPack">Salin pesan</button><span class="note" data-ok="pesanPack"></span>
-     ${outOfRange(sel) || outOfRange(max) ? '<p class="warn">Tanggal ini di luar data libur (Nov 2026 – Des 2027), hasil mungkin kurang akurat.</p>' : ""}`;
+  $("pTgl").textContent = fID.format(max);
+  $("pInfo").textContent = `Pesanan ${fID.format(sel)}, ${P.cut === "before" ? "sebelum" : "sesudah"} jam 12 siang` +
+    (P.tipe === "po" ? `, pre-order ${P.po} hari kerja.` : ", pengemasan normal.");
+  $("pesanPack").value = P.tipe === "normal" ? PESAN_PACK.normal(fEN.format(max)) : PESAN_PACK.po(fEN.format(max), P.po);
+  $("pWarn").textContent = outOfRange(sel) || outOfRange(max) ? "Tanggal di luar data libur (Nov 2026 – Des 2027), hasil mungkin kurang akurat." : "";
 }
 const calPack = makeCalendar($("calPack"), () => CAL.ID, hitungPack);
+fillSeg($("segPO"), PO_PILIHAN.map(n => [n, n]), P.po);
 seg($("segTipe"), v => { P.tipe = v; hitungPack(); });
 seg($("segCut"), v => { P.cut = v; hitungPack(); });
 seg($("segPO"), v => { P.po = Number(v); hitungPack(); });
@@ -338,44 +360,31 @@ $("poMin").addEventListener("click", () => { P.po = Math.max(1, P.po - 1); hitun
 $("poPlus").addEventListener("click", () => { P.po = Math.min(200, P.po + 1); hitungPack(); });
 
 /* ---------- PENGIRIMAN ---------- */
-const K = { negara:"SG" };
-let hasil = [];
-Object.entries(NEGARA).forEach(([k, c]) => $("segNegara").insertAdjacentHTML("beforeend", `<button type="button" data-v="${k}" class="${k === K.negara ? "on" : ""}">${c.nama}</button>`));
-
-function isiStatus() {
-  const dd5 = NEGARA[K.negara].opsi.some(o => o.dd5), keep = $("status").value;
-  $("status").innerHTML = Object.entries(TEMPLATE).filter(([, t]) => !t.dd5 || dd5)
-    .map(([k, t]) => `<option value="${k}">${t.nama}</option>`).join("");
-  if (keep && $("status").querySelector(`option[value="${keep}"]`)) $("status").value = keep;
-}
+const K = { negara:"SG", opsi:0, status:"3pl-id" };
+const opsiAktif = () => NEGARA[K.negara].opsi[K.opsi];
 
 function hitungKirim() {
-  const sel = calKirim.get(), cal = CAL[K.negara], t = today0();
-  let late = outOfRange(sel);
-  hasil = NEGARA[K.negara].opsi.map(o => {
-    const base = o.cutoff === "after" ? nextWD(sel, cal) : sel;
-    const d = addWD(base, o.n, cal); late = late || outOfRange(d);
-    return { ...o, d, sisa: d > t ? wdBetween(t, d, cal) : 0 };
-  });
-  $("tblKirim").innerHTML = "<tr><th>Opsi</th><th>Maksimal tiba</th><th>Sisa HK</th></tr>" +
-    hasil.map(h => `<tr><td>${h.label} (${h.n} HK)</td><td class="tgl">${fID.format(h.d)}</td><td>${h.sisa}</td></tr>`).join("");
-  $("warnKirim").textContent = late ? "Sebagian hasil melewati data libur (Nov 2026 – Des 2027), hasil mungkin kurang akurat." : "";
-  const keep = $("opsi").value;
-  $("opsi").innerHTML = hasil.map((h, i) => `<option value="${i}">${h.label}</option>`).join("");
-  if (keep && hasil[keep]) $("opsi").value = keep;
-  buatPesan();
-}
-function buatPesan() {
-  if (!hasil.length) return;
-  const h = hasil[$("opsi").value || 0];
-  $("pesanKirim").value = TEMPLATE[$("status").value].isi(fEN.format(h.d), NEGARA[K.negara].nama);
+  const sel = calKirim.get(), cal = CAL[K.negara], o = opsiAktif(), t = today0();
+  fillSeg($("segNegara"), Object.entries(NEGARA).map(([k, c]) => [k, c.nama]), K.negara);
+  fillSeg($("segOpsi"), NEGARA[K.negara].opsi.map((x, i) => [i, x.label]), K.opsi);
+  fillSeg($("segStatus"), Object.entries(TEMPLATE).map(([k, x]) => [k, x.nama]), K.status);
+  $("segStatus").classList.toggle("dim", !!o.dd5);
+  $("hintPaid").textContent = o.dd5 ? "(isi tanggal paid)" : "";
+
+  const base = o.cutoff === "after" ? nextWD(sel, cal) : sel;
+  const max = addWD(base, o.n, cal);
+  const sisa = max > t ? wdBetween(t, max, cal) : 0;
+  $("kTgl").textContent = fID.format(max);
+  $("kInfo").textContent = `${NEGARA[K.negara].nama}, ${o.label} (${o.n} hari kerja). Dikirim ${fID.format(sel)}. Sisa ${sisa} hari kerja dari hari ini.`;
+  $("pesanKirim").value = o.dd5 ? MAKRO_5DD(fEN.format(max)) : TEMPLATE[K.status].isi(fEN.format(max), NEGARA[K.negara].nama);
+  $("kWarn").textContent = outOfRange(sel) || outOfRange(max) ? "Tanggal di luar data libur (Nov 2026 – Des 2027), hasil mungkin kurang akurat." : "";
 }
 const calKirim = makeCalendar($("calKirim"), () => CAL[K.negara], hitungKirim);
-seg($("segNegara"), v => { K.negara = v; calKirim.refresh(); isiStatus(); hitungKirim(); });
-$("opsi").addEventListener("change", buatPesan);
-$("status").addEventListener("change", buatPesan);
+seg($("segNegara"), v => { K.negara = v; K.opsi = 0; calKirim.refresh(); hitungKirim(); });
+seg($("segOpsi"), v => { K.opsi = Number(v); hitungKirim(); });
+seg($("segStatus"), v => { K.status = v; hitungKirim(); });
 
-isiStatus(); hitungPack(); hitungKirim();
+hitungPack(); hitungKirim();
 </script>
 </body>
 </html>
